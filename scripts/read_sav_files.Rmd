@@ -1,0 +1,39 @@
+---
+title: "Census PUMF"
+output: html_notebook
+---
+
+Uses the 2016 Census PUMF file
+
+```{r setup}
+# tidyverse
+library(tidyverse)
+library(haven)
+
+# other utilities
+
+```
+
+
+## Individual file
+
+```{r}
+
+d_indiv <- haven::read_spss(here::here("data", "_Individual_98M0001X", "data_donnees_2016_ind.sav"))
+
+head(d_indiv)
+
+```
+
+
+
+## Hierarchical file
+
+```{r}
+
+d_hierarch <- haven::read_spss(here::here("data", "_Hierachical File", "data_donnees_2016_hier.sav"))
+
+head(d_hierarch)
+
+```
+
