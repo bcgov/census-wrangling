@@ -1,2 +1,2 @@
-# census_wrangling
+# census-wrangling
 Working with various data files from the Census of Population (Statistics Canada)
