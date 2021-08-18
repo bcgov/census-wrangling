@@ -24,6 +24,12 @@ date: "2021/08/18"
 
 * [Core housing need](https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/chn-biml/index-eng.cfm)
 
+* ["One in ten Canadian households living in core housing need in 2018"](https://www150.statcan.gc.ca/n1/daily-quotidien/201002/dq201002a-eng.htm), _The Daily_, 2020-10-02
+
+* [Understanding core housing need](https://www.cmhc-schl.gc.ca/en/professionals/housing-markets-data-and-research/housing-research/core-housing-need), CMHC
+
+* [Characteristics of Households in Core Housing Need: Canada, P/T, CMAs](https://www.cmhc-schl.gc.ca/en/professionals/housing-markets-data-and-research/housing-data/data-tables/household-characteristics/characteristics-households-core-housing-need-canada-pt-cmas), CMHC (Excel file)
+
 
 **Shelter-cost-to-income ratio (STIR)**
 
@@ -65,12 +71,12 @@ _definitions_
 
 * [definition: Shelter-cost-to-income ratio of private household](https://www23.statcan.gc.ca/imdb/p3Var.pl?Function=DEC&Id=103407)
 
-    - spending more than 30% or more than 50% of _before tax_ income on shelter costs
+    - spending more than 30% or more than 50% of _before tax_ (total) income on shelter costs
 
 
 * related: [CMHC, _Defining the Affordability of Housing in Canada_, final report](https://eppdscrmssa01.blob.core.windows.net/cmhcprodcontainer/sf/project/archive/research_2/defining_affordability_of-housing-in-canada.pdf)
 
-* [definition: Core housing need](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/households-menage037-eng.cfm)
+* [definition: **Core housing need**](https://www12.statcan.gc.ca/census-recensement/2016/ref/dict/households-menage037-eng.cfm)
 
 
 
