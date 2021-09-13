@@ -49,7 +49,7 @@ In the 2016 Census PUMF, individuals are flagged by
   
   - `ABOID`: 'Aboriginal identity' refers to whether the person identified with the Aboriginal peoples of Canada. This includes those who are First Nations (North American Indian), Métis or Inuk (Inuit) and/or those who are Registered or Treaty Indians (that is, registered under the Indian Act of Canada), and/or those who have membership in a First Nation or Indian band.
 
-These two groups can be compared to the non-indigenous / non-visible minority population.
+These two groups can be compared to the non-indigenous / non-visible minority population. Group together ("ABO") any who identify as Aboriginal (ABOID == 1:5: First Nations (North American Indian); Métis; Inuk (Inuit); Multiple Aboriginal responses; Aboriginal responses not included elsewhere ). Of those remaining, group together ("VM") any who identify as Visible Minority (VisMin == 1:12). Everyone else is grouped as "ELSE" (including those who have an "not available" entry). Note that there is some cross-over of those who identify as both Aboriginal and Visible Minority: these people are grouped as ABO, because (i) there are fewer Aboriginal people in BC than Visible Minorities, and (ii) people identifying as Aboriginal often have different circumstances (live on reserves/band dwellings, tax situations, etc.). Note also that there are many "not available" entries in the hierarchical datafile under ABOID and/or VISMIN.
 
 
 The Census PUMF also contains variables relating to:
