@@ -1,0 +1,176 @@
+<!--
+Copyright 2021 Province of British Columbia
+
+This work is licensed under the Creative Commons Attribution 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by/4.0/.
+-->
+
+
+---
+title: "EDA: race and housing"
+author: "Martin Monkman"
+date: "18/08/2021"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exploratory data analysis: race and housing
+
+### Objective: 
+
+Using the 2016 Census PUMF, explore the relationship between race and housing in British Columbia
+
+Secondary:
+
+* EDA by Census Metropolitan Area & Census Agglomeration
+
+
+### Methods
+
+In the 2016 Census PUMF, individuals are flagged by 
+
+* a variety of "visible minority" categories (a mutated variable based on the Canadian Human Rights Code definition, calculated from the "ethnicity" questions of the Census)
+
+  - summary: `VISMIN`
+  
+  - The Employment Equity Act defines visible minorities as 'persons, other than Aboriginal peoples, who are non-Caucasian in race or non-white in colour'.
+  
+  - plus assorted detailed categories: `DETH123`, `DPGRSUM`, `ETHDER`
+  
+  - Are we interested in any "Place of birth, immigration and citizenship" variables?
+
+* a variety of indigenous identity categories: `ABOID`, `BFNMEMB`, `REGIND`
+
+  - summary: `ABOID`
+  
+  - `ABOID`: 'Aboriginal identity' refers to whether the person identified with the Aboriginal peoples of Canada. This includes those who are First Nations (North American Indian), Métis or Inuk (Inuit) and/or those who are Registered or Treaty Indians (that is, registered under the Indian Act of Canada), and/or those who have membership in a First Nation or Indian band.
+
+These two groups can be compared to the non-indigenous / non-visible minority population.
+
+
+The Census PUMF also contains variables relating to:
+
+* dwelling condition: `REPAIR`
+
+  - Refers to whether the dwelling is in need of repairs. This does not include desirable remodeling or additions.
+
+  - 1 = only regular maintenance needed; 2 = Minor repairs needed; 3 = Major repairs needed; 8 = Not available
+  
+
+* housing suitability: `NOS`
+
+  - Refers to whether a private household is living in suitable accommodations according to the National Occupancy Standard (NOS); that is, whether the dwelling has enough bedrooms for the size and composition of the household. A household is deemed to be living in suitable accommodations if its dwelling has enough bedrooms, as calculated using the NOS. Housing suitability and the National Occupancy Standard (NOS) were developed by Canada Mortgage and Housing Corporation (CMHC) through consultations with provincial housing agencies.
+  
+  - 0 = Not suitable; 1 = Suitable; 8 = Not available
+
+
+* housing affordability
+
+  - spending more than 30% or more than 50% of _before tax_ income on shelter costs
+  
+  - `mutate(housing_afford = 12*SHELCO / TOTINC)`
+
+
+* housing core need indicator
+
+  - these three housing indicators are summarized in this variable: `HCORENEED_IND`
+  
+  - A household is in core housing need if its housing fails to meet at least one of three standards established for housing adequacy, suitability, and affordability, and if its income before taxes is at or below the appropriate community-and-bedroom-specific income threshold.
+  
+  - 0 = Not in core need; 100 = In core need; 888 = not available
+
+
+* subsized dwelling: `SUBSIDY`, `Subsidy`
+
+  - Refers to whether a renter household lives in a dwelling that is subsidized. Subsidized housing includes rent geared to income, social housing, public housing, government-assisted housing, non-profit housing, rent supplements and housing allowances. This variable is reported for private households in tenant-occupied dwellings.
+  
+  - "Not available" (9) includes Owner-occupied dwellings and Owned farm dwellings
+  
+  
+* all other "Dwelling: Housing and shelter cost" variables:
+
+  - `BEDRM`, `BUILT`, `CONDO`, `DTYPE`, `FCOND`, `PRESMORTG`, `ROOMS`, `TENUR`, `VALUE`
+
+  - note: `BUILT` and `FCOND` are only available in hierarchical PUMF
+
+
+### Data
+
+#### PUMF on **households**
+
+  - N = **140,720** private households, with a total of **343,330** individual records, representing 1% of the population in private households in private occupied dwellings in Canada
+  
+  - records drawn from a sample of 1/4 of Canadian population (sample data from questionnaire 2A-L)
+  
+  - 95 variables: 81 from individual universe; 14 from the family, household and dwelling universes
+  
+  - file contains four unique record identifiers (ID), an individual weighting factor and 16 replicate weights for the purpose of estimating sampling variability
+  
+  - exclusions: does **not** include people living in institutions; Canadian citizens living temporarily in other countries; full-time members of the Canadian Forces stationed outside Canada; persons living in institutional collective dwellings such as hospitals, nursing homes and penitentiaries; and persons living in non-institutional collective dwellings such as work camps, hotels and motels, and student residences
+
+
+#### PUMF on **individuals**
+
+  - N = **930,421** individual records, representing 2.7% of the Canadian population
+  
+  - records drawn from a sample of 1/4 of Canadian population (sample data from questionnaire 2A-L)
+  
+  - 123 variables: 92 from individual universe; 31 from the family, household and dwelling universes
+  
+  - file contains a unique record identifier (ID), an individual weighting factor and 16 replicate weights for the purpose of estimating sampling variability
+  
+  - exclusions: does **not** include people living in institutions; Canadian citizens living temporarily in other countries; full-time members of the Canadian Forces stationed outside Canada; persons living in institutional collective dwellings such as hospitals, nursing homes and penitentiaries; and persons living in non-institutional collective dwellings such as work camps, hotels and motels, and student residences
+
+
+#### Notes 
+
+For all quantitative variables, the data are rounded to base 100, 1,000 or 10,000.
+
+Both PUMFs contain lower and upper income limits. Thus, the data on total income and sources of income are adjusted proportionally. Lower and upper limits are also applied to certain dwelling variables such as ‘value of dwelling’.
+
+Users should use caution when using housing and shelter cost data for analyses focused entirely or largely on the Aboriginal population. [page 140, Chapter 4, Indv User Guide]
+
+In 2016, for the first time, administrative data were the sole source of income information for the Census Program. ... income, shelter costs, child care expenses, earnings and losses for the individuals selected to be part of this microdata file were subjected to ... rounding and extreme values adjustment procedures. ... [C]alculating the weighted sum of all values of a particular variable in a given geographical region yields a sum comparable to the sum one would obtain if no top-coding had been done on the data. [page 142-143, Chapter 4, Indv User Guide]
+
+The **census family** is the narrower concept, defined by couples living together, with or without children, and lone parents living with their children.
+The **economic family** is broader, and refers to two or more persons living together who are related to each other by blood, marriage, common-law union, adoption or a foster relationship.
+All people in a census family are part of one economic family. If there are additional relatives living with them, those people are also in the economic family. The additional relatives, if two or more, may also be in a census family among themselves, provided they are a couple with or without children or a lone parent with children. [page 4, Families Reference Guide]
+
+
+#### Income variables
+
+Note that `TotInc` is at the individual level. `HHInc` is the household level, BUT is grouped. (and only indv file)
+
+Total Income (`TotInc`) = Market Income (`MrkInc`) + Government Transfers (`GTRfs`)
+
+Market Income:
+
+  - Employment Income (`EmpIn`): -50000:1200829; Q1 12000; Median 34000; Mean 46730; Q3 62000
+  
+    - Wages, Salaries & Commissions (`Wages`): 1:1236606; Q1 13000; Median 36000; Mean 47547; Q3 64000
+    
+    - Net Self-Employment Income (`SempI`): -50000:676390; Q1 1000; Median 7000; Mean 19089; Q3 19000
+  
+  - Investment Income (`Invst`): -50000:1325720; Q1 100; Median 800; Mean 10824; Q3 4600
+  
+  - Private Retirement Income (`Retir`): 1:262716; none neg
+
+Government Transfers:
+
+  - Old Age Security pension (OAS) and Guaranteed Income Supplement (GIS)
+  
+  - Canada Pension Plan (CPP) and Quebec Pension plan (QPP) benefits
+  
+  - Employment Insurance (EI) benefits
+  
+  - Child benefits
+  
+  - Other government transfers: social assistance benefits, workers compensation benefits, 
+  working income tax benefit, goods and services tax credit and harmonized sales tax credit,
+  government transfers not included elsewhere
+
+
